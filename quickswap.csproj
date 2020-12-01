@@ -39,4 +39,22 @@
     <PackageReference Include="HarmonyX" Version="2.2.0" />
   </ItemGroup>
 
+  <Target Name="GenerateZip" DependsOnTargets="Publish">
+    <PropertyGroup>
+      <_ZipDir>$(OutputPath)/zip-publish/</_ZipDir>
+      <_ZipFile>$(OutputPath)/quickswap.zip</_ZipFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ZipFiles Include="$(PublishDir)/**/*.*"/>
+    </ItemGroup>
+
+    <RemoveDir Directories="$(_ZipDir)/BepInEx/plugins/" />
+    <MakeDir Directories="$(_ZipDir)/BepInEx/plugins/quickswap" />
+    <Copy SourceFiles="@(_ZipFiles)" DestinationFiles="@(_ZipFiles->'$(_ZipDir)/BepInEx/plugins/quickswap/%(RecursiveDir)%(Filename)%(Extension)')" />
+    <ZipDirectory DestinationFile="$(_ZipFile)" Overwrite="true" SourceDirectory="$(_ZipDir)" />
+
+    <Message Importance="High" Text="$(MSBuildProjectName) -> $([System.IO.Path]::GetFullPath('$(_ZipFile)'))" />
+  </Target>
+
 </Project>
