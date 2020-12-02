@@ -35,7 +35,6 @@ namespace Quickswap {
                         MoviePlayers.Remove(elem);
                     } else {
                         if (!player.Loop && !player.inWorld) {
-                            Logger.LogInfo("stopping video");
                             player.StopVideo();
                         } else {
                             Logger.LogInfo($"not skipping, Loop: {player.Loop}, inWorld: {player.inWorld}");
